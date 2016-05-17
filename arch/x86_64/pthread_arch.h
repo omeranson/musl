@@ -1,8 +1,15 @@
+
+struct {
+	struct pthread * p;
+} __pthread_arch_pthread_self_p;
+struct pthread __pthread_arch_pthread_self_i;
+
 static inline struct pthread *__pthread_self()
 {
-	struct pthread *self;
-	__asm__ __volatile__ ("mov %%fs:0,%0" : "=r" (self) );
-	return self;
+	if (!__pthread_arch_pthread_self_p.p) {
+		__pthread_arch_pthread_self_p.p = &__pthread_arch_pthread_self_i;
+	}
+	return __pthread_arch_pthread_self_p.p;
 }
 
 #define TP_ADJ(p) (p)

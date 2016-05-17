@@ -105,7 +105,8 @@ static inline void a_spin()
 #define a_crash a_crash
 static inline void a_crash()
 {
-	__asm__ __volatile__( "hlt" : : : "memory" );
+	volatile long * p = 0;
+	p = (long *)*p;
 }
 
 #define a_ctz_64 a_ctz_64

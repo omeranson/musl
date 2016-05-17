@@ -3,7 +3,7 @@ cc="@CC@"
 libc="@PREFIX@"
 libc_inc="@INCDIR@"
 libc_lib="@LIBDIR@"
-thisdir="`cd "$(dirname "$0")"; pwd`"
+libc_bin="@BINDIR@"
 
 # prevent clang from running the linker (and erroring) on no input.
 sflags=
@@ -21,12 +21,11 @@ for x ; do
 done
 
 exec $cc \
-    -B"$thisdir" \
-    -fuse-ld=musl-clang \
-    -static-libgcc \
+    -B"$libc_bin" \
     -nostdinc \
     --sysroot "$libc" \
     -isystem "$libc_inc" \
+    -L$libc_lib \
     -L-user-start \
     $sflags \
     "$@" \

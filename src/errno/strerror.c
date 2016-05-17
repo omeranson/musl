@@ -26,7 +26,7 @@ char *__strerror_l(int e, locale_t loc)
 	}
 	for (i=0; errid[i] && errid[i] != e; i++);
 	for (s=errmsg; i; s++, i--) for (; *s; s++);
-	return (char *)LCTRANS(s, LC_MESSAGES, loc);
+	return (char *)LCTRANS(s, LC_MESSAGES, loc ? loc : C_LOCALE);
 }
 
 char *strerror(int e)

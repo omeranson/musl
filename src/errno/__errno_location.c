@@ -2,5 +2,10 @@
 
 int *__errno_location(void)
 {
-	return &__pthread_self()->errno_val;
+	static int _errno;
+	struct pthread * ptr = __pthread_self();
+	if (!ptr) {
+		return &_errno;
+	}
+	return &ptr->errno_val;
 }
