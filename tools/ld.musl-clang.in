@@ -33,14 +33,14 @@ for x ; do
             userlink=
             ;;
         *crtbegin*.o|*crtend*.o)
-            #set -- "$@" $($cc -print-file-name=$x)
+            set -- "$@" $($cc -print-file-name=$x)
             ;;
         -lgcc|-lgcc_eh|-lgcc_s)
             #file=lib${x#-l}.a
             #set -- "$@" $($cc -print-file-name=$file)
             ;;
         -l*)
-            test "$userlink" && set -- "$@" "$x"
+            set -- "$@" "$x"
             ;;
         -shared)
             shared=1

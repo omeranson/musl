@@ -22,9 +22,7 @@ done
 
 exec $cc \
     -B"$libc_bin" \
-    -nostdinc \
     --sysroot "$libc" \
-    -isystem "$libc_inc" \
     -L$libc_lib \
     -L-user-start \
     $sflags \
