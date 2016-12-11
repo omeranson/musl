@@ -1,4 +1,8 @@
 #!/bin/sh
+if [ "$COMPILE_STD_LIBC" ] ; then
+	exec /usr/bin/ld $*
+fi
+
 cc="@CC@"
 libc_lib="@LIBDIR@"
 ldso="@LDSO@"
