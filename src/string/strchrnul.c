@@ -14,13 +14,12 @@ char *__strchrnul(const char *s, int c)
 
 	c = (unsigned char)c;
 	if (!c) return (char *)s + strlen(s);
-
-	for (; (uintptr_t)s % ALIGN; s++)
-		if (!*s || *(unsigned char *)s == c) return (char *)s;
-	k = ONES * c;
-	for (w = (void *)s; !HASZERO(*w) && !HASZERO(*w^k); w++);
-	for (s = (void *)w; *s && *(unsigned char *)s != c; s++);
-	return (char *)s;
+	for (; *s; s++) {
+		if (*s == c) {
+			break;
+		}
+	}
+	return (char*)s;
 }
 
 weak_alias(__strchrnul, strchrnul);
