@@ -16,3 +16,8 @@ void _start_c(long *p)
 	char **argv = (void *)(p+1);
 	__libc_start_main(main, argc, argv, _init, _fini, 0);
 }
+
+int __libc_start_main_klee(int (*main)(int,char **,char **), int argc, char * argv[]);
+int _start_klee(int argc, char * argv[]) {
+	return __libc_start_main_klee(main, argc, argv);
+}

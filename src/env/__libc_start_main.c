@@ -74,3 +74,23 @@ int __libc_start_main(int (*main)(int,char **,char **), int argc, char **argv)
 	exit(main(argc, argv, envp));
 	return 0;
 }
+
+int __libc_start_main_klee(int (*main)(int,char **,char **), int argc, char * argv[]) {
+	// A watered down version of start_c/__libc_start_main for klee
+	size_t i, *auxv, aux[AUX_CNT] = { 0 };
+	__environ = 0;
+	__hwcap = aux[AT_HWCAP];
+	__sysinfo = aux[AT_SYSINFO];
+	libc.page_size = aux[AT_PAGESZ];
+	char * pn = argv[0];
+	__progname = __progname_full = pn;
+	for (i=0; pn[i]; i++) if (pn[i]=='/') __progname = pn+i+1;
+	__init_tls(aux);
+	__init_ssp((void *)aux[AT_RANDOM]);
+
+	__libc_start_init();
+	void * uselocale(void*);
+	uselocale((void*)-1);
+
+	return main(argc, argv, 0);
+}
