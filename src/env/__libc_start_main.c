@@ -78,7 +78,8 @@ int __libc_start_main(int (*main)(int,char **,char **), int argc, char **argv)
 int __libc_start_main_klee(int (*main)(int,char **,char **), int argc, char * argv[]) {
 	// A watered down version of start_c/__libc_start_main for klee
 	size_t i, *auxv, aux[AUX_CNT] = { 0 };
-	__environ = 0;
+	static char * __environ_terminator = 0;
+	__environ = &__environ_terminator;
 	__hwcap = aux[AT_HWCAP];
 	__sysinfo = aux[AT_SYSINFO];
 	libc.page_size = aux[AT_PAGESZ];
