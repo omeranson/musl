@@ -25,7 +25,10 @@ int fclose(FILE *f)
 	r |= f->close(f);
 
 	if (f->getln_buf) free(f->getln_buf);
-	if (!perm) free(f);
+	if (!perm) {
+		free(f->buf - UNGET);
+		free(f);
+	}
 	else FUNLOCK(f);
 
 	return r;
